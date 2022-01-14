@@ -32,3 +32,19 @@ func CreateUser(c *gin.Context) {
 
 	c.Status(204)
 }
+
+func GetUsers(c *gin.Context) {
+	db := database.GetDatabase()
+	var users []models.User
+	err := db.Find(&users).Error
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "cannot find product by id: " + err.Error(),
+		})
+
+		return
+	}
+
+	c.JSON(200, users)
+}
